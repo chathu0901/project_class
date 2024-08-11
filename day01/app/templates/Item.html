@@ -1,0 +1,76 @@
+<html>
+<head>
+    <style>
+        h1{
+            margin-top: 30px;
+            color:palevioletred;
+        }
+        table{
+            width: 700px;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+        th, td {
+            padding: 10px;
+            border: 1px solid #000;
+        }
+        .heading{
+            background-color:palevioletred;
+        }
+        body{
+            margin-left: 50px;
+        }
+        .pagination{
+            margin-left: 150px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Item Management</h1>
+    <form method="POST">
+        {% csrf_token %}
+        {{form.as_p}} 
+        <input type="submit" value="Save">
+    </form>
+    
+    <label>Name Contains</label>
+    <input/>
+    <button>Search</button>
+    
+    <table border="1">
+    <tr class = "heading">
+        <th>Id</th>
+        <th>Name</th>
+        <th>Price</th>
+        <th>Image</th>
+        <th>Category</th>
+        <th>Unit</th>
+        <th>Action</th>
+    </tr>
+    {% for item in page %}
+    <tr>
+        <td>{{item.id}}</td>
+        <td>{{item.name}}</td>
+        <td>{{item.price}}</td>
+        <td><img src="{{item.image}}"></td>
+        <td>{{item.category}}</td>
+        <td>{{item.unit}}</td>
+        <td><button>View</button></td>
+    </tr>
+    {% endfor %}
+</table>
+<div class="pagination">
+    {% if page.has_previous %}
+        <button><a href="?page=1">&laquo; First</a></button>
+        <button><a href="?page={{ page.previous_page_number }}">Previous</a></button>
+    {% endif %}
+
+    Page {{ page.number }} of {{ page.paginator.num_pages }}
+
+    {% if page.has_next %}
+        <button><a href="?page={{ page.next_page_number }}">Next</a></button>
+        <button><a href="?page={{ page.paginator.num_pages }}">Last &raquo;</a></button>
+    {% endif %}
+</div>
+</body>
+</html>
